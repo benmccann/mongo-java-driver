@@ -43,5 +43,5 @@ modifyPom {
 }
 
 dependencies {
-    compile 'com.fasterxml:classmate:1.1.0'
+    compile 'com.fasterxml:classmate:1.2.0'
 }

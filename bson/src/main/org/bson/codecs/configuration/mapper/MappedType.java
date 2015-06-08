@@ -5,19 +5,19 @@ import java.util.List;
 
 public class MappedType {
     private MappedType owner;
-    private Class type;
-    private final List<Class> parameterTypes = new ArrayList<Class>();
+    private final Class<?> type;
+    private final List<Class<?>> parameterTypes = new ArrayList<Class<?>>();
 
-    public MappedType(final Class type) {
+    public MappedType(final Class<?> type) {
         this.type = type;
     }
 
-    public MappedType(final Class type, final MappedType owner) {
+    public MappedType(final Class<?> type, final MappedType owner) {
         this.owner = owner;
         this.type = type;
     }
 
-    public Class getType() {
+    public Class<?> getType() {
         return type;
     }
 
@@ -25,7 +25,7 @@ public class MappedType {
         return owner;
     }
 
-    public void addParameter(Class parameter) {
+    public void addParameter(final Class<?> parameter) {
         parameterTypes.add(parameter);
     }
 }

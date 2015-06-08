@@ -6,8 +6,8 @@ import org.bson.BsonWriter;
 import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
-import org.bson.codecs.configuration.CodecRegistry;
 
+@SuppressWarnings("unchecked")
 public class ClassModelCodec<T> implements Codec<T> {
     private final ClassModel classModel;
 
@@ -18,7 +18,8 @@ public class ClassModelCodec<T> implements Codec<T> {
     @Override
     public T decode(final BsonReader reader, final DecoderContext decoderContext) {
         try {
-            final Object entity = classModel.getType().newInstance();
+            final Class<T> type = (Class<T>) classModel.getType();
+            final T entity = type.newInstance();
             reader.readStartDocument();
             while (reader.readBsonType() != BsonType.END_OF_DOCUMENT) {
                 final String name = reader.readName();
@@ -27,7 +28,7 @@ public class ClassModelCodec<T> implements Codec<T> {
 
             }
             reader.readEndDocument();
-            return (T) entity;
+            return entity;
         } catch (final Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -39,13 +40,12 @@ public class ClassModelCodec<T> implements Codec<T> {
         for (final FieldModel fieldModel : classModel.getFields()) {
             writer.writeName(fieldModel.getName());
             fieldModel.getCodec().encode(writer, fieldModel.get(value), encoderContext);
-
         }
         writer.writeEndDocument();
     }
 
     @Override
     public Class<T> getEncoderClass() {
-        return classModel.getType();
+        return (Class<T>) classModel.getType();
     }
 }

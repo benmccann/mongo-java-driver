@@ -84,7 +84,7 @@ public class ClassModelCodecTest {
 
     private static class Entity {
         private String name;
-        private Integer faves;
+        private int faves;
         private Long age;
 
         public Entity() {

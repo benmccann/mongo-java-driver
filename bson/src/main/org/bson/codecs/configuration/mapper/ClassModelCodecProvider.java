@@ -10,17 +10,17 @@ import java.util.Set;
 
 public class ClassModelCodecProvider implements CodecProvider {
     private final TypeResolver resolver = new TypeResolver();
-    private final Set<Class> registered;
+    private final Set<Class<?>> registered;
 
-    public ClassModelCodecProvider(final Set<Class> registered) {
-        this.registered = registered;
+    public ClassModelCodecProvider(final Set<Class<?>> registered) {
+        this.registered = new HashSet<Class<?>>(registered);
     }
 
     @Override
     public <T> Codec<T> get(final Class<T> clazz, final CodecRegistry registry) {
         Codec<T> codec = null;
         if(registered.contains(clazz)) {
-            codec = new ClassModelCodec(new ClassModel(registry, resolver, clazz));
+            codec = new ClassModelCodec<T>(new ClassModel(registry, resolver, clazz));
         }
         return codec;
     }
@@ -30,9 +30,9 @@ public class ClassModelCodecProvider implements CodecProvider {
     }
 
     public static class ProviderBuilder {
-        private final Set<Class> registered = new HashSet<Class>();
+        private final Set<Class<?>> registered = new HashSet<Class<?>>();
         
-        public ProviderBuilder register(final Class clazz) {
+        public ProviderBuilder register(final Class<?> clazz) {
             registered.add(clazz);
             return this;
         }

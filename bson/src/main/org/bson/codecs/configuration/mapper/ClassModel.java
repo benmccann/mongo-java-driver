@@ -5,10 +5,6 @@ import com.fasterxml.classmate.ResolvedType;
 import com.fasterxml.classmate.ResolvedTypeWithMembers;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.classmate.members.ResolvedField;
-import org.bson.BsonReader;
-import org.bson.BsonWriter;
-import org.bson.codecs.DecoderContext;
-import org.bson.codecs.EncoderContext;
 import org.bson.codecs.configuration.CodecRegistry;
 
 import java.util.Collection;
