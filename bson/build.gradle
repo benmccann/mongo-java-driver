@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.1'
+    }
+}
+
 apply plugin: 'osgi'
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'org.kordamp.gradle.clirr'
 
 def configDir = new File(rootDir, 'config')
@@ -24,14 +33,6 @@ clirr {
     excludeFilter = new File("$configDir/clirr-exclude.yml")
     baseline 'org.mongodb:bson:3.0.0'
     failOnErrors = false
-}
-
-jar {
-    manifest {
-        instruction 'Import-Package',
-                    'javax.xml.bind.*',
-                    'org.slf4j;resolution:=optional'
-    }
 }
 
 modifyPom {
@@ -44,4 +45,20 @@ modifyPom {
 
 dependencies {
     compile 'com.fasterxml:classmate:1.2.0'
+}
+
+jar {
+    manifest {
+        instruction 'Import-Package',
+                    'javax.xml.bind.*',
+                    'org.slf4j;resolution:=optional'
+    }
+}
+
+shadowJar {
+    dependencies {
+        include(dependency('com.fasterxml:classmate:1.2.0'))
+    }
+    classifier = ''
+    relocate 'com.fasterxml.classmate', 'com.mongodb.classmate'
 }
